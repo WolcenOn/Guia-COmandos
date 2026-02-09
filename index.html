@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Guía definitiva ASIR — Linux & Windows (v3)</title>
+<style>
+:root{
+  --bg:#0b1020; --text:#e8ecff; --muted:#b8c3ff;
+  --border:rgba(255,255,255,.14); --accent:#7aa2ff; --warn:#ffcf5c; --ok:#61d095;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;background:linear-gradient(180deg,var(--bg),#070a14);color:var(--text)}
+header{position:sticky;top:0;z-index:10;background:rgba(11,16,32,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:14px 16px}
+h1{margin:0;font-size:18px}
+.sub{margin:6px 0 0;color:rgba(232,236,255,.72);font-size:12.5px;line-height:1.35}
+.layout{display:grid;grid-template-columns:380px 1fr;gap:14px;padding:14px;max-width:1700px;margin:0 auto}
+@media (max-width: 980px){.layout{grid-template-columns:1fr} .filters{position:relative;top:auto}}
+.filters{position:sticky;top:74px;align-self:start;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:14px}
+.filters h2{margin:0 0 8px;font-size:14px;color:var(--muted)}
+.block{margin:12px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.10)}
+.block:first-of-type{border-top:none;padding-top:0}
+.label{font-size:12px;color:rgba(232,236,255,.75);margin:0 0 6px}
+input[type="search"],select{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);outline:none}
+input[type="search"]::placeholder{color:rgba(232,236,255,.45)}
+select{min-height:40px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.04);cursor:pointer;user-select:none;font-size:12.5px}
+.chip input{accent-color:var(--accent)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button{border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);padding:9px 10px;border-radius:12px;cursor:pointer;font-size:12.5px}
+button:hover{border-color:rgba(255,255,255,.25)}
+.content{min-width:0}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 12px}
+.pill{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:rgba(232,236,255,.82)}
+details{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;margin:10px 0;overflow:hidden}
+summary{padding:12px 14px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px}
+summary::-webkit-details-marker{display:none}
+.k{font-weight:700;color:var(--muted)}
+.count{margin-left:auto;font-size:12px;color:rgba(232,236,255,.6)}
+.tablewrap{padding:0 14px 14px}
+table{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.10)}
+th,td{padding:10px;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.08)}
+th{background:rgba(255,255,255,.06);text-align:left;font-size:12px;color:rgba(232,236,255,.88)}
+tr:last-child td{border-bottom:none}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:12px;background:rgba(0,0,0,.25);padding:2px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.10)}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.tag{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.14);color:rgba(232,236,255,.78)}
+.tag.linux{background:rgba(97,208,149,.10);border-color:rgba(97,208,149,.32)}
+.tag.win{background:rgba(122,162,255,.10);border-color:rgba(122,162,255,.32)}
+.tag.cmd{background:rgba(255,207,92,.10);border-color:rgba(255,207,92,.32)}
+.tag.ps{background:rgba(122,162,255,.16);border-color:rgba(122,162,255,.42)}
+.tag.level{background:rgba(255,255,255,.05)}
+.tag.distro{background:rgba(255,255,255,.03)}
+.note{font-size:12px;color:rgba(232,236,255,.72);margin:10px 0 0;line-height:1.35}
+.warn{color:var(--warn)}
+.ok{color:var(--ok)}
+.small{font-size:12px;color:rgba(232,236,255,.72)}
+ul{margin:0;padding-left:18px}
+.ex{margin-top:8px}
+.ex li{margin:4px 0}
+.sep{border:none;border-top:1px dashed rgba(255,255,255,.14);margin:10px 0}
+kbd{border:1px solid rgba(255,255,255,.18); padding:1px 6px; border-radius:8px; background:rgba(255,255,255,.05); font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Guía definitiva ASIR — Linux & Windows (v3)</h1>
+  <p class="sub">
+    Incluye ya un lote más grande de comandos (y <b>ipconfig</b> ✅). El sistema está hecho para crecer: puedes importar más comandos en JSON desde la propia página.
+  </p>
+</header>
+
+<div class="layout">
+  <aside class="filters">
+    <h2>Filtros</h2>
+
+    <div class="block">
+      <div class="label">Buscar</div>
+      <input id="q" type="search" placeholder="Ej.: ipconfig /all · apt install · ss -tulpen · firewall-cmd · journalctl -u" />
+      <div class="small">Atajo: pulsa <kbd>/</kbd> para enfocar el buscador.</div>
+    </div>
+
+    <div class="block">
+      <div class="label">Nivel</div>
+      <div class="chips">
+        <label class="chip"><input type="checkbox" class="lvl" value="basic" checked> Básico</label>
+        <label class="chip"><input type="checkbox" class="lvl" value="admin" checked> Admin</label>
+        <label class="chip"><input type="checkbox" class="lvl" value="advanced" checked> Avanzado</label>
+        <label class="chip"><input type="checkbox" class="lvl" value="scripting" checked> Scripting</label>
+        <label class="chip"><input type="checkbox" class="lvl" value="pentest" checked> Auditoría (autorizado)</label>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="label">Sistema operativo</div>
+      <div class="chips">
+        <label class="chip"><input id="osLinux" type="checkbox" checked> Linux</label>
+        <label class="chip"><input id="osWindows" type="checkbox" checked> Windows</label>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="label">Windows: shell</div>
+      <div class="chips">
+        <label class="chip"><input type="checkbox" class="shell" value="cmd" checked> CMD</label>
+        <label class="chip"><input type="checkbox" class="shell" value="powershell" checked> PowerShell</label>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="label">Windows: versión</div>
+      <select id="winVersion">
+        <option value="any" selected>Cualquiera</option>
+        <option value="10">Windows 10</option>
+        <option value="11">Windows 11</option>
+        <option value="2019">Windows Server 2019</option>
+        <option value="2022">Windows Server 2022</option>
+      </select>
+    </div>
+
+    <div class="block">
+      <div class="label">Linux: distro</div>
+      <select id="linuxDistro">
+        <option value="any" selected>Cualquiera / Genérico</option>
+        <option value="ubuntu">Ubuntu</option>
+        <option value="debian">Debian</option>
+        <option value="rhel">RHEL</option>
+        <option value="fedora">Fedora</option>
+        <option value="arch">Arch</option>
+      </select>
+    </div>
+
+    <div class="block">
+      <div class="label">Linux: versión</div>
+      <select id="linuxVersion">
+        <option value="any" selected>Cualquiera</option>
+      </select>
+    </div>
+
+    <div class="block">
+      <div class="label">Categoría</div>
+      <select id="category">
+        <option value="any" selected>Todas</option>
+      </select>
+    </div>
+
+    <div class="block">
+      <div class="chips">
+        <label class="chip"><input id="onlyMatches" type="checkbox" checked> Solo coincidencias</label>
+        <label class="chip"><input id="autoOpen" type="checkbox" checked> Abrir secciones con resultados</label>
+      </div>
+
+      <div class="btns">
+        <button id="reset">Restablecer</button>
+        <button id="collapse">Colapsar</button>
+        <button id="expand">Expandir</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="label">Importar más comandos (JSON)</div>
+      <input id="importFile" type="file" accept=".json,application/json" />
+      <div class="small">
+        Puedes exportar/editar tu propia base de datos e importarla aquí. (Se guarda en tu navegador con LocalStorage.)
+      </div>
+      <div class="btns">
+        <button id="exportJson">Exportar JSON</button>
+        <button id="clearLocal">Borrar datos importados</button>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Meta:</b> “guía definitiva” = base amplia + ampliación por módulos. Esta v3 ya trae un set grande y mecanismo para añadir miles más.
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="stats">
+      <span class="pill" id="statVisible">— visibles</span>
+      <span class="pill" id="statTotal">— totales</span>
+      <span class="pill"><span class="warn">⚠</span> Auditoría: uso autorizado</span>
+    </div>
+
+    <div id="sections"></div>
+
+    <div class="note">
+      <b>Nota:</b> “Todos los comandos posibles” no tiene fin (depende de paquetes instalados). Lo correcto es cubrir:
+      <span class="small">core del sistema + comandos de administración + los de tus stacks (AD, Docker, Nginx, SQL, etc.).</span>
+      Con este formato puedes crecer sin perder usabilidad.
+    </div>
+  </main>
+</div>
+
+<script>
+const BUILTIN = [{"cat": "Archivos y directorios", "os": "linux", "cmd": "ls", "desc": "Lista archivos y carpetas.", "params": [{"p": "-l", "e": "Formato largo: permisos, propietario/grupo, tamaño, fecha."}, {"p": "-a", "e": "Incluye ocultos (empiezan por punto)."}, {"p": "-h", "e": "Tamaños legibles (KB/MB/GB), útil con -l."}, {"p": "-R", "e": "Recursivo: incluye subdirectorios."}, {"p": "--sort=time", "e": "Ordena por fecha de modificación."}], "ex": ["ls -lah", "ls --sort=time -l /var/log | head"], "level": ["basic", "admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "pwd", "desc": "Muestra el directorio actual.", "params": [{"p": "(sin parámetros)", "e": "Imprime la ruta actual."}], "ex": ["pwd"], "level": ["basic"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "cd", "desc": "Cambia de directorio.", "params": [{"p": "cd ..", "e": "Sube un nivel."}, {"p": "cd -", "e": "Vuelve al directorio anterior."}, {"p": "cd ~", "e": "Va al HOME."}], "ex": ["cd /etc", "cd -"], "level": ["basic"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "cp", "desc": "Copia archivos o directorios.", "params": [{"p": "-r", "e": "Copia carpetas y su contenido."}, {"p": "-a", "e": "Preserva permisos/propietario/fechas/enlaces (recomendado)."}, {"p": "-i", "e": "Pregunta antes de sobrescribir."}, {"p": "-v", "e": "Muestra lo que copia."}], "ex": ["cp -a /etc/nginx /backup/", "cp -iv a.txt /tmp/"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "mv", "desc": "Mueve o renombra.", "params": [{"p": "-i", "e": "Pregunta antes de sobrescribir."}, {"p": "-n", "e": "No sobrescribe si existe destino."}, {"p": "-v", "e": "Muestra acciones."}], "ex": ["mv -iv viejo.txt nuevo.txt", "mv carpeta/ /srv/app/"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "rm", "desc": "Elimina archivos/carpetas (permanente).", "params": [{"p": "-r", "e": "Borra carpetas y contenido."}, {"p": "-f", "e": "Fuerza sin preguntar (peligroso)."}, {"p": "-i", "e": "Confirma cada borrado."}], "ex": ["rm -i fichero.txt", "rm -r carpeta/"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "mkdir", "desc": "Crea directorios.", "params": [{"p": "-p", "e": "Crea también carpetas intermedias."}, {"p": "-m 750", "e": "Crea con permisos concretos."}], "ex": ["mkdir -p /srv/app/{logs,data}"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "rmdir", "desc": "Elimina directorios vacíos.", "params": [{"p": "-p", "e": "Elimina también padres vacíos."}], "ex": ["rmdir carpeta_vacia", "rmdir -p a/b/c"], "level": ["basic"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "touch", "desc": "Crea archivo vacío o actualiza timestamps.", "params": [{"p": "-t YYYYMMDDhhmm", "e": "Fija fecha/hora concreta."}, {"p": "-m", "e": "Solo mtime."}, {"p": "-a", "e": "Solo atime."}], "ex": ["touch nuevo.txt", "touch -t 202601010800 fichero.log"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "stat", "desc": "Muestra metadatos (permisos, inodo, fechas).", "params": [{"p": "-c FORMAT", "e": "Personaliza salida (útil en scripts)."}], "ex": ["stat /etc/passwd"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "file", "desc": "Detecta tipo real de archivo (no por extensión).", "params": [{"p": "-b", "e": "Salida breve (sin el nombre del archivo)."}], "ex": ["file /bin/ls", "file -b archivo.bin"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "du", "desc": "Mide uso de disco por carpetas/archivos.", "params": [{"p": "-h", "e": "Tamaños legibles."}, {"p": "-s", "e": "Resumen (total)."}, {"p": "--max-depth=1", "e": "Solo 1 nivel de subcarpetas."}], "ex": ["du -sh /var/log", "du -h --max-depth=1 /home"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "df", "desc": "Muestra espacio libre/ocupado por sistema de archivos.", "params": [{"p": "-h", "e": "Legible."}, {"p": "-T", "e": "Incluye tipo de FS."}], "ex": ["df -hT"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "ln", "desc": "Crea enlaces.", "params": [{"p": "-s", "e": "Enlace simbólico."}, {"p": "(sin -s)", "e": "Hardlink (mismo inodo; mismo FS)."}], "ex": ["ln -s /var/www/app/current /var/www/app/live"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "tar", "desc": "Empaqueta y extrae.", "params": [{"p": "-c", "e": "Crear archivo tar."}, {"p": "-x", "e": "Extraer."}, {"p": "-f", "e": "Archivo destino/origen."}, {"p": "-z", "e": "gzip (.tar.gz)."}, {"p": "-v", "e": "Verbose (lista ficheros)."}], "ex": ["tar -czvf backup.tar.gz /etc/nginx", "tar -xzvf backup.tar.gz -C /tmp"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "linux", "cmd": "rsync", "desc": "Sincroniza copias eficientes (local/remoto).", "params": [{"p": "-a", "e": "Modo archivo (preserva casi todo)."}, {"p": "-v", "e": "Verbose."}, {"p": "-z", "e": "Comprime en tránsito."}, {"p": "--delete", "e": "Borra en destino lo que no exista en origen (ojo)."}, {"p": "-e ssh", "e": "Usa SSH como transporte."}], "ex": ["rsync -av --delete /srv/app/ /backup/app/", "rsync -avz -e ssh /srv/app/ user@host:/backup/app/"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "cat", "desc": "Muestra contenido concatenado.", "params": [{"p": "-n", "e": "Numera líneas."}, {"p": "-A", "e": "Muestra caracteres especiales (tabs, fin de línea)."}], "ex": ["cat fichero.txt", "cat -n fichero.txt"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "less", "desc": "Visor paginado para archivos grandes.", "params": [{"p": "-N", "e": "Muestra números de línea."}, {"p": "/texto", "e": "Busca dentro del archivo (n = siguiente)."}], "ex": ["less -N /var/log/syslog"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "head", "desc": "Muestra inicio de un archivo.", "params": [{"p": "-n 20", "e": "Primeras 20 líneas."}], "ex": ["head -n 50 /etc/passwd"], "level": ["basic"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "tail", "desc": "Muestra final de un archivo (logs).", "params": [{"p": "-n 200", "e": "Últimas 200 líneas."}, {"p": "-f", "e": "Sigue en tiempo real."}, {"p": "-F", "e": "Sigue y reabre tras rotación."}], "ex": ["tail -F /var/log/auth.log"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "grep", "desc": "Busca texto dentro de archivos.", "params": [{"p": "-i", "e": "Ignora mayúsculas/minúsculas."}, {"p": "-r", "e": "Recursivo."}, {"p": "-n", "e": "Número de línea."}, {"p": "-E", "e": "Regex extendida."}, {"p": "--color=auto", "e": "Resalta coincidencias."}], "ex": ["grep -Rni --color=auto \"error\" /var/log", "grep -E \"404|500\" access.log"], "level": ["basic", "admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "sed", "desc": "Reemplazos/edición por flujo.", "params": [{"p": "s/A/B/g", "e": "Reemplaza A por B en todas las apariciones."}, {"p": "-i", "e": "Edita el archivo en sitio (haz backup)."}, {"p": "-n 'p'", "e": "Controla qué líneas imprime."}], "ex": ["sed -n '1,20p' /etc/ssh/sshd_config", "sed -i 's/^#Port 22/Port 2222/' /etc/ssh/sshd_config"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "awk", "desc": "Procesa columnas/patrones (logs/CSV).", "params": [{"p": "-F ':'", "e": "Separador de campos."}, {"p": "{print $1}", "e": "Imprime primera columna."}, {"p": "NR==1", "e": "Primera línea."}], "ex": ["awk -F: '{print $1}' /etc/passwd | head"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "cut", "desc": "Extrae columnas/posiciones.", "params": [{"p": "-d ':'", "e": "Delimitador."}, {"p": "-f 1,3", "e": "Campos 1 y 3."}, {"p": "-c 1-10", "e": "Caracteres 1 a 10."}], "ex": ["cut -d: -f1,3 /etc/passwd | head"], "level": ["basic", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "sort", "desc": "Ordena líneas.", "params": [{"p": "-n", "e": "Orden numérico."}, {"p": "-r", "e": "Orden inverso."}, {"p": "-u", "e": "Elimina duplicados."}], "ex": ["sort -u lista.txt"], "level": ["basic", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "uniq", "desc": "Elimina duplicados consecutivos.", "params": [{"p": "-c", "e": "Cuenta ocurrencias."}, {"p": "-d", "e": "Solo duplicados."}], "ex": ["sort lista.txt | uniq -c | sort -nr | head"], "level": ["scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "linux", "cmd": "xargs", "desc": "Convierte entrada en argumentos (con cuidado).", "params": [{"p": "-0", "e": "Usa separador NUL (seguro con espacios) junto a find -print0."}, {"p": "-n 1", "e": "1 argumento por ejecución."}, {"p": "-I{}", "e": "Marca reemplazo."}], "ex": ["find . -name \"*.log\" -print0 | xargs -0 rm -i"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Usuarios y grupos", "os": "linux", "cmd": "id", "desc": "Muestra UID/GID y grupos.", "params": [{"p": "usuario", "e": "Consulta un usuario concreto."}], "ex": ["id", "id www-data"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Usuarios y grupos", "os": "linux", "cmd": "useradd", "desc": "Crea usuarios.", "params": [{"p": "-m", "e": "Crea home."}, {"p": "-s /bin/bash", "e": "Shell por defecto."}, {"p": "-G g1,g2", "e": "Grupos suplementarios."}, {"p": "-u UID", "e": "UID manual (evita conflictos)."}], "ex": ["sudo useradd -m -s /bin/bash -G sudo asir"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Usuarios y grupos", "os": "linux", "cmd": "usermod", "desc": "Modifica usuarios.", "params": [{"p": "-aG g", "e": "Añade a grupo sin quitar los demás (muy importante el -a)."}, {"p": "-s /bin/zsh", "e": "Cambia shell."}, {"p": "-L", "e": "Bloquea cuenta."}, {"p": "-U", "e": "Desbloquea."}], "ex": ["sudo usermod -aG docker asir", "sudo usermod -L invitado"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Usuarios y grupos", "os": "linux", "cmd": "passwd", "desc": "Cambia contraseña / gestiona expiración básica.", "params": [{"p": "usuario", "e": "Cambia contraseña de ese usuario (requiere privilegios)."}, {"p": "-l", "e": "Bloquea contraseña."}, {"p": "-u", "e": "Desbloquea."}, {"p": "-S", "e": "Muestra estado."}], "ex": ["sudo passwd asir", "sudo passwd -l invitado"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Usuarios y grupos", "os": "linux", "cmd": "groupadd/groupmod/groupdel", "desc": "Gestiona grupos.", "params": [{"p": "groupadd g", "e": "Crea grupo."}, {"p": "groupdel g", "e": "Elimina grupo."}, {"p": "gpasswd -a user g", "e": "Añade usuario a grupo (alternativa)."}], "ex": ["sudo groupadd devops", "sudo gpasswd -a asir devops"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Permisos y ACL", "os": "linux", "cmd": "chmod", "desc": "Cambia permisos POSIX.", "params": [{"p": "755", "e": "rwx r-x r-x (dirs/scripts)."}, {"p": "644", "e": "rw- r-- r-- (ficheros)."}, {"p": "-R", "e": "Recursivo."}, {"p": "u+x", "e": "Añade ejecución al dueño."}], "ex": ["chmod 755 script.sh", "chmod -R 750 /srv/app"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Permisos y ACL", "os": "linux", "cmd": "chown", "desc": "Cambia propietario y grupo.", "params": [{"p": "user:group", "e": "Define dueño y grupo."}, {"p": "-R", "e": "Recursivo."}], "ex": ["sudo chown -R www-data:www-data /var/www/app"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Permisos y ACL", "os": "linux", "cmd": "sudo", "desc": "Ejecuta como root u otro usuario (según sudoers).", "params": [{"p": "-l", "e": "Lista lo permitido."}, {"p": "-u usuario", "e": "Ejecuta como usuario concreto."}, {"p": "-k", "e": "Olvida credenciales cacheadas."}], "ex": ["sudo -l", "sudo -u www-data whoami"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Permisos y ACL", "os": "linux", "cmd": "getfacl/setfacl", "desc": "ACL POSIX (permisos finos).", "params": [{"p": "getfacl ruta", "e": "Muestra ACL."}, {"p": "setfacl -m u:usr:rwx ruta", "e": "Añade/modifica ACL."}, {"p": "setfacl -x u:usr ruta", "e": "Elimina ACL de ese usuario."}, {"p": "-R", "e": "Recursivo."}], "ex": ["getfacl /srv/app", "setfacl -m u:asir:rX /srv/app"], "level": ["advanced", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "linux", "cmd": "ps", "desc": "Lista procesos.", "params": [{"p": "aux", "e": "Vista completa (BSD)."}, {"p": "-ef", "e": "Vista estilo SysV."}], "ex": ["ps aux | head", "ps -ef | grep sshd"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "linux", "cmd": "top/htop", "desc": "Monitor en tiempo real.", "params": [{"p": "(teclas)", "e": "q salir; P orden CPU; M orden memoria (depende herramienta)."}], "ex": ["top", "htop"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "linux", "cmd": "kill/pkill", "desc": "Termina procesos.", "params": [{"p": "-15", "e": "SIGTERM: termina de forma limpia (preferido)."}, {"p": "-9", "e": "SIGKILL: fuerza (último recurso)."}, {"p": "pkill -f patrón", "e": "Mata por patrón de línea de comandos (cuidado)."}], "ex": ["kill -15 1234", "pkill -f nginx"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "linux", "cmd": "systemctl", "desc": "Gestiona servicios systemd.", "params": [{"p": "status", "e": "Estado + últimos logs."}, {"p": "start/stop/restart", "e": "Controla servicio."}, {"p": "enable/disable", "e": "Arranque automático."}, {"p": "--now", "e": "Aplica enable/disable inmediatamente."}], "ex": ["systemctl status ssh", "systemctl enable --now nginx"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "linux", "cmd": "journalctl", "desc": "Consulta logs de systemd.", "params": [{"p": "-u servicio", "e": "Solo logs del servicio."}, {"p": "-f", "e": "Sigue en tiempo real."}, {"p": "--since '1 hour ago'", "e": "Filtra por tiempo."}, {"p": "-p err", "e": "Solo errores."}], "ex": ["journalctl -u ssh -f", "journalctl --since 'today' -p err"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "linux", "cmd": "dmesg", "desc": "Mensajes del kernel (arranque/hardware).", "params": [{"p": "-T", "e": "Convierte timestamps a fecha/hora legible."}, {"p": "-w", "e": "Sigue en tiempo real."}], "ex": ["dmesg -T | tail -n 40"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "linux", "cmd": "ip", "desc": "Herramienta moderna de red.", "params": [{"p": "a", "e": "Direcciones IP de interfaces."}, {"p": "r", "e": "Tabla de rutas."}, {"p": "link", "e": "Estado/MAC de interfaces."}, {"p": "neigh", "e": "Tabla ARP/vecinos."}], "ex": ["ip a", "ip r", "ip link set eth0 up"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "linux", "cmd": "ss", "desc": "Sockets/puertos (reemplaza netstat).", "params": [{"p": "-tulpen", "e": "Listen TCP/UDP + PID/proceso + números."}, {"p": "-s", "e": "Resumen por estado."}], "ex": ["ss -tulpen"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "linux", "cmd": "ping", "desc": "Conectividad y latencia.", "params": [{"p": "-c 4", "e": "Envía 4 paquetes y termina."}, {"p": "-i 0.2", "e": "Intervalo."}], "ex": ["ping -c 4 8.8.8.8"], "level": ["basic"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "linux", "cmd": "traceroute", "desc": "Ruta por saltos.", "params": [{"p": "-n", "e": "No DNS (más rápido)."}, {"p": "-I", "e": "ICMP (según permisos)."}], "ex": ["traceroute -n 1.1.1.1"], "level": ["admin", "basic"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "linux", "cmd": "curl", "desc": "Cliente HTTP/HTTPS para pruebas.", "params": [{"p": "-I", "e": "Solo cabeceras."}, {"p": "-s", "e": "Silencioso."}, {"p": "-k", "e": "Ignora validación TLS (solo test; no recomendado)."}, {"p": "-o", "e": "Guarda salida a fichero."}], "ex": ["curl -I https://example.com", "curl -s https://example.com | head"], "level": ["basic", "admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "linux", "cmd": "wget", "desc": "Descargas por HTTP/FTP.", "params": [{"p": "-O archivo", "e": "Guarda con nombre concreto."}, {"p": "-q", "e": "Silencioso."}, {"p": "-c", "e": "Reanuda descarga."}], "ex": ["wget -O index.html https://example.com"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "linux", "cmd": "dig", "desc": "Diagnóstico DNS.", "params": [{"p": "@servidor", "e": "DNS específico."}, {"p": "+short", "e": "Salida corta."}, {"p": "A|AAAA|MX|TXT", "e": "Tipo de registro."}, {"p": "+trace", "e": "Traza desde raíz."}], "ex": ["dig +short A example.com", "dig @8.8.8.8 MX google.com"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "linux", "cmd": "nslookup", "desc": "Consulta DNS básica (legacy pero común).", "params": [{"p": "host", "e": "Nombre a resolver."}, {"p": "servidor", "e": "DNS específico."}], "ex": ["nslookup example.com", "nslookup example.com 8.8.8.8"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Firewall", "os": "linux", "cmd": "ufw", "desc": "Firewall sencillo (Ubuntu/Debian).", "params": [{"p": "enable", "e": "Activa y aplica reglas."}, {"p": "status verbose", "e": "Muestra reglas detalladas."}, {"p": "allow 22/tcp", "e": "Permite 22 TCP."}, {"p": "deny 80/tcp", "e": "Bloquea 80 TCP."}, {"p": "delete <regla>", "e": "Elimina una regla."}], "ex": ["sudo ufw allow 22/tcp", "sudo ufw status verbose"], "level": ["admin"], "distro": ["ubuntu", "debian"], "linux_min": {"ubuntu": "18.04", "debian": "10"}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Firewall", "os": "linux", "cmd": "firewall-cmd", "desc": "firewalld por zonas (RHEL/Fedora).", "params": [{"p": "--state", "e": "Estado de firewalld."}, {"p": "--list-all", "e": "Zona activa."}, {"p": "--add-service=http", "e": "Abre servicio http."}, {"p": "--add-port=443/tcp", "e": "Abre puerto 443."}, {"p": "--permanent", "e": "Persistente."}, {"p": "--reload", "e": "Recarga."}], "ex": ["sudo firewall-cmd --add-service=http --permanent && sudo firewall-cmd --reload"], "level": ["admin", "advanced"], "distro": ["rhel", "fedora"], "linux_min": {"rhel": "7", "fedora": "20"}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Firewall", "os": "linux", "cmd": "nft", "desc": "Firewall moderno (nftables).", "params": [{"p": "list ruleset", "e": "Muestra reglas actuales."}, {"p": "add rule ...", "e": "Añade regla (requiere diseño/precaución)."}], "ex": ["sudo nft list ruleset"], "level": ["advanced", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Discos y particiones", "os": "linux", "cmd": "lsblk", "desc": "Lista discos/particiones de forma clara.", "params": [{"p": "-f", "e": "Incluye FS, UUID, label."}, {"p": "-o COLS", "e": "Elige columnas (NAME,SIZE,FSTYPE,MOUNTPOINT...)."}], "ex": ["lsblk -f", "lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT"], "level": ["admin", "basic"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Discos y particiones", "os": "linux", "cmd": "blkid", "desc": "Muestra UUID/labels (útil para /etc/fstab).", "params": [{"p": "-o value", "e": "Salida limpia (útil para scripts)."}], "ex": ["sudo blkid"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Discos y particiones", "os": "linux", "cmd": "mount/umount", "desc": "Monta/desmonta sistemas de archivos.", "params": [{"p": "-t tipo", "e": "Tipo de FS (ext4,xfs,nfs,...)."}, {"p": "-o opciones", "e": "Opciones (ro,rw,noexec,nosuid...)."}], "ex": ["sudo mount /dev/sdb1 /mnt/data", "sudo umount /mnt/data"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Discos y particiones", "os": "linux", "cmd": "fdisk", "desc": "Particionado MBR/GPT (cuidado).", "params": [{"p": "-l", "e": "Lista tablas de partición."}], "ex": ["sudo fdisk -l"], "level": ["advanced", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Discos y particiones", "os": "linux", "cmd": "parted", "desc": "Particionado avanzado (GPT, tamaños).", "params": [{"p": "print", "e": "Muestra particiones."}, {"p": "mkpart", "e": "Crea partición (cuidado)."}], "ex": ["sudo parted -l"], "level": ["advanced", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Discos y particiones", "os": "linux", "cmd": "mkfs", "desc": "Crea un sistema de archivos (destruye datos).", "params": [{"p": "mkfs.ext4 /dev/sdb1", "e": "Crea ext4 en la partición."}, {"p": "-L LABEL", "e": "Etiqueta."}], "ex": ["sudo mkfs.ext4 -L DATA /dev/sdb1"], "level": ["advanced", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Paquetes y software", "os": "linux", "cmd": "apt", "desc": "Gestión paquetes Debian/Ubuntu.", "params": [{"p": "update", "e": "Actualiza índices."}, {"p": "upgrade", "e": "Actualiza instalados."}, {"p": "install pkg", "e": "Instala."}, {"p": "remove pkg", "e": "Desinstala (mantiene config)."}, {"p": "purge pkg", "e": "Desinstala + borra config."}, {"p": "autoremove", "e": "Borra dependencias sobrantes."}, {"p": "-y", "e": "Confirma automáticamente (ojo)."}], "ex": ["sudo apt update", "sudo apt install nginx -y"], "level": ["admin"], "distro": ["ubuntu", "debian"], "linux_min": {"ubuntu": "18.04", "debian": "10"}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Paquetes y software", "os": "linux", "cmd": "dnf", "desc": "Gestión paquetes Fedora/RHEL.", "params": [{"p": "install pkg", "e": "Instala."}, {"p": "remove pkg", "e": "Desinstala."}, {"p": "update", "e": "Actualiza."}, {"p": "search txt", "e": "Busca."}, {"p": "-y", "e": "Confirma automáticamente."}], "ex": ["sudo dnf install httpd -y"], "level": ["admin"], "distro": ["fedora", "rhel"], "linux_min": {"fedora": "20", "rhel": "7"}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Paquetes y software", "os": "linux", "cmd": "yum", "desc": "Gestión paquetes (legacy en RHEL antiguos).", "params": [{"p": "install", "e": "Instala."}, {"p": "update", "e": "Actualiza."}, {"p": "remove", "e": "Desinstala."}], "ex": ["sudo yum update"], "level": ["admin"], "distro": ["rhel"], "linux_min": {"rhel": "7"}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Paquetes y software", "os": "linux", "cmd": "pacman", "desc": "Gestión paquetes Arch.", "params": [{"p": "-S pkg", "e": "Instala."}, {"p": "-R pkg", "e": "Desinstala."}, {"p": "-Syu", "e": "Actualiza sistema."}, {"p": "-Ss txt", "e": "Busca."}], "ex": ["sudo pacman -Syu", "sudo pacman -S nginx"], "level": ["admin"], "distro": ["arch"], "linux_min": {"arch": "rolling"}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Información del sistema", "os": "windows", "cmd": "systeminfo", "desc": "Información detallada del sistema (versión, parches, HW).", "params": [{"p": "(sin parámetros)", "e": "Salida completa (puede tardar)."}], "ex": ["systeminfo"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "windows", "cmd": "dir", "desc": "Lista contenido en CMD.", "params": [{"p": "/A", "e": "Incluye ocultos/sistema."}, {"p": "/S", "e": "Incluye subdirectorios."}, {"p": "/B", "e": "Solo nombres (ideal scripts)."}, {"p": "/O:D", "e": "Ordena por fecha."}], "ex": ["dir /A /O:D", "dir /S /B *.log"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "windows", "cmd": "cd", "desc": "Cambia de directorio.", "params": [{"p": "/d", "e": "Cambia también de unidad (C: → D:)."}], "ex": ["cd /d D:\\Datos"], "level": ["basic"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "windows", "cmd": "copy/xcopy", "desc": "Copia archivos (xcopy para árboles legacy).", "params": [{"p": "xcopy /E", "e": "Incluye subdirectorios (incluye vacíos)."}, {"p": "xcopy /H", "e": "Incluye ocultos y sistema."}, {"p": "xcopy /Y", "e": "No pregunta al sobrescribir."}], "ex": ["xcopy C:\\Origen D:\\Destino /E /H /Y"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "windows", "cmd": "robocopy", "desc": "Copias robustas (ideal redes).", "params": [{"p": "/MIR", "e": "Espejo (incluye borrados; riesgo)."}, {"p": "/Z", "e": "Reanuda."}, {"p": "/R:n", "e": "Reintentos."}, {"p": "/W:n", "e": "Espera."}, {"p": "/COPY:DAT", "e": "Datos/Atributos/Timestamps."}], "ex": ["robocopy C:\\Datos D:\\Backup\\Datos /MIR /Z /R:3 /W:5"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "windows", "cmd": "findstr", "desc": "Busca texto en archivos (CMD).", "params": [{"p": "/S", "e": "Recursivo."}, {"p": "/I", "e": "Ignora mayúsculas."}, {"p": "/N", "e": "Número de línea."}, {"p": "/R", "e": "Regex."}, {"p": "/C:\"texto\"", "e": "Cadena literal completa."}], "ex": ["findstr /S /I /N \"error\" *.log"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "windows", "cmd": "ipconfig", "desc": "Config IP en Windows (imprescindible).", "params": [{"p": "/all", "e": "Muestra todo: DNS, DHCP, MAC, gateways, etc."}, {"p": "/flushdns", "e": "Limpia caché DNS local (tras cambios de DNS)."}, {"p": "/renew", "e": "Renueva concesión DHCP."}, {"p": "/release", "e": "Libera IP DHCP."}, {"p": "/displaydns", "e": "Muestra entradas de caché DNS."}], "ex": ["ipconfig /all", "ipconfig /flushdns"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "windows", "cmd": "ping", "desc": "Conectividad/latencia.", "params": [{"p": "-n 4", "e": "Envía 4 paquetes."}, {"p": "-t", "e": "Ping continuo."}], "ex": ["ping -n 4 8.8.8.8"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "windows", "cmd": "tracert", "desc": "Ruta por saltos.", "params": [{"p": "-d", "e": "No resuelve DNS."}, {"p": "-h 30", "e": "Máx saltos."}], "ex": ["tracert -d 1.1.1.1"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "windows", "cmd": "nslookup", "desc": "Consultas DNS (CMD).", "params": [{"p": "host", "e": "Nombre a resolver."}, {"p": "server", "e": "DNS específico."}], "ex": ["nslookup example.com", "nslookup example.com 8.8.8.8"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "windows", "cmd": "netstat", "desc": "Puertos y conexiones.", "params": [{"p": "-a", "e": "Todo."}, {"p": "-n", "e": "Numérico."}, {"p": "-o", "e": "Incluye PID."}, {"p": "-b", "e": "Muestra ejecutable (requiere admin; más lento)."}], "ex": ["netstat -ano"], "level": ["admin", "basic"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "windows", "cmd": "route", "desc": "Tabla de rutas.", "params": [{"p": "print", "e": "Muestra rutas."}, {"p": "add", "e": "Añade ruta (puede ser persistente)."}, {"p": "delete", "e": "Borra ruta."}], "ex": ["route print"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "windows", "cmd": "arp", "desc": "Caché ARP (LAN).", "params": [{"p": "-a", "e": "Muestra entradas."}, {"p": "-d *", "e": "Borra todas (requiere admin)."}], "ex": ["arp -a"], "level": ["admin", "basic"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Firewall", "os": "windows", "cmd": "netsh advfirewall", "desc": "Gestiona firewall desde CMD.", "params": [{"p": "show allprofiles", "e": "Muestra perfiles y estado."}, {"p": "set allprofiles state on", "e": "Activa firewall."}, {"p": "firewall add rule ...", "e": "Añade regla (mejor en PowerShell si automatizas)."}], "ex": ["netsh advfirewall show allprofiles"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Usuarios y grupos", "os": "windows", "cmd": "net user", "desc": "Usuarios locales (CMD).", "params": [{"p": "usuario /add", "e": "Crea usuario."}, {"p": "usuario /delete", "e": "Elimina."}, {"p": "/active:no", "e": "Desactiva cuenta."}, {"p": "*", "e": "Pide password sin mostrarlo."}], "ex": ["net user asir * /add"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Usuarios y grupos", "os": "windows", "cmd": "net localgroup", "desc": "Grupos locales (CMD).", "params": [{"p": "Grupo", "e": "Nombre del grupo (p.ej. Administrators)."}, {"p": "usuario /add", "e": "Añade al grupo."}, {"p": "usuario /delete", "e": "Quita del grupo."}], "ex": ["net localgroup Administrators asir /add"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "windows", "cmd": "tasklist", "desc": "Lista procesos (CMD).", "params": [{"p": "/V", "e": "Detallado."}, {"p": "/FI", "e": "Filtro."}], "ex": ["tasklist /V | more"], "level": ["basic", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "windows", "cmd": "taskkill", "desc": "Finaliza procesos (CMD).", "params": [{"p": "/PID", "e": "Por PID."}, {"p": "/IM", "e": "Por nombre."}, {"p": "/F", "e": "Fuerza."}, {"p": "/T", "e": "Incluye hijos."}], "ex": ["taskkill /IM notepad.exe /F"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "windows", "cmd": "sc", "desc": "Servicios desde CMD.", "params": [{"p": "query", "e": "Lista/consulta."}, {"p": "start name", "e": "Inicia."}, {"p": "stop name", "e": "Detiene."}, {"p": "qc name", "e": "Config del servicio."}], "ex": ["sc query", "sc qc w32time"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Tareas programadas", "os": "windows", "cmd": "schtasks", "desc": "Programador de tareas (CMD).", "params": [{"p": "/Create", "e": "Crea."}, {"p": "/TN", "e": "Nombre."}, {"p": "/TR", "e": "Comando."}, {"p": "/SC", "e": "Frecuencia."}, {"p": "/ST", "e": "Hora."}, {"p": "/Query", "e": "Lista."}], "ex": ["schtasks /Create /TN \"Backup\" /TR \"C:\\Scripts\\backup.cmd\" /SC DAILY /ST 02:00"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Registro (Windows)", "os": "windows", "cmd": "reg", "desc": "Registro desde CMD.", "params": [{"p": "query", "e": "Lee."}, {"p": "add", "e": "Crea/modifica."}, {"p": "delete", "e": "Borra."}, {"p": "export", "e": "Backup .reg."}, {"p": "import", "e": "Importa .reg."}], "ex": ["reg query \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\""], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Discos y almacenamiento", "os": "windows", "cmd": "diskpart", "desc": "Gestiona discos/volúmenes (interactivo).", "params": [{"p": "list disk", "e": "Lista discos."}, {"p": "list volume", "e": "Lista volúmenes."}, {"p": "select disk N", "e": "Selecciona disco."}, {"p": "detail disk", "e": "Detalle."}], "ex": ["diskpart (luego: list disk)"], "level": ["advanced", "admin"], "distro": ["any"], "linux_min": {}, "shell": "cmd", "winver": ["any"], "tags": []}, {"cat": "Archivos y directorios", "os": "windows", "cmd": "Get-ChildItem (gci)", "desc": "Lista archivos como objetos.", "params": [{"p": "-Recurse", "e": "Recursivo."}, {"p": "-Force", "e": "Incluye ocultos."}, {"p": "-Filter", "e": "Filtra eficiente."}, {"p": "-File/-Directory", "e": "Solo archivos o carpetas."}], "ex": ["Get-ChildItem C:\\Logs -Recurse -Filter *.log | Select-Object -First 20"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Texto y filtrado", "os": "windows", "cmd": "Select-String", "desc": "Buscar texto tipo grep (objetos).", "params": [{"p": "-Pattern", "e": "Texto o regex."}, {"p": "-Context 2,2", "e": "Líneas antes/después."}, {"p": "-CaseSensitive", "e": "Sensible a mayúsculas."}], "ex": ["Select-String -Path C:\\Logs\\*.log -Pattern \"error\" -Context 1,2"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Red y DNS", "os": "windows", "cmd": "Test-NetConnection", "desc": "Prueba conectividad y puertos.", "params": [{"p": "-ComputerName", "e": "Host/IP."}, {"p": "-Port", "e": "Puerto TCP."}, {"p": "-InformationLevel Detailed", "e": "Más detalle."}], "ex": ["Test-NetConnection -ComputerName servidor -Port 443"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["10", "11", "2019", "2022", "any"], "tags": []}, {"cat": "Red y DNS", "os": "windows", "cmd": "Resolve-DnsName", "desc": "Consulta DNS moderna.", "params": [{"p": "-Name", "e": "Nombre."}, {"p": "-Type A|AAAA|MX|TXT", "e": "Tipo."}, {"p": "-Server", "e": "DNS específico."}], "ex": ["Resolve-DnsName -Name example.com -Type A"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Firewall", "os": "windows", "cmd": "New-NetFirewallRule", "desc": "Crea reglas de firewall.", "params": [{"p": "-DisplayName", "e": "Nombre visible."}, {"p": "-Direction", "e": "Inbound/Outbound."}, {"p": "-Action", "e": "Allow/Block."}, {"p": "-Protocol", "e": "TCP/UDP."}, {"p": "-LocalPort", "e": "Puerto local."}], "ex": ["New-NetFirewallRule -DisplayName \"HTTPS In\" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 443"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Usuarios y grupos", "os": "windows", "cmd": "Get-LocalUser / New-LocalUser", "desc": "Usuarios locales (PowerShell).", "params": [{"p": "Get-LocalUser", "e": "Lista usuarios."}, {"p": "New-LocalUser", "e": "Crea usuario (requiere secure string)."}, {"p": "Disable-LocalUser", "e": "Deshabilita."}], "ex": ["Get-LocalUser | Select-Object Name,Enabled"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "windows", "cmd": "Get-Process / Stop-Process", "desc": "Procesos como objetos.", "params": [{"p": "Get-Process -Name", "e": "Filtra por nombre."}, {"p": "Stop-Process -Id", "e": "Detiene por Id."}, {"p": "-Force", "e": "Fuerza."}], "ex": ["Get-Process | Sort-Object CPU -Descending | Select-Object -First 10"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "windows", "cmd": "Get-Service / Restart-Service", "desc": "Servicios como objetos.", "params": [{"p": "Get-Service", "e": "Lista servicios."}, {"p": "-Name", "e": "Filtra por nombre."}, {"p": "Restart-Service", "e": "Reinicia servicio."}], "ex": ["Get-Service | Where-Object Status -eq 'Running' | Select-Object -First 10"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Procesos, servicios y logs", "os": "windows", "cmd": "Get-WinEvent", "desc": "Lee Visor de eventos.", "params": [{"p": "-LogName", "e": "Security/System/Application."}, {"p": "-MaxEvents", "e": "Limita eventos."}, {"p": "-FilterHashtable", "e": "Filtro eficiente (Id, StartTime...)."}], "ex": ["Get-WinEvent -LogName System -MaxEvents 20"], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Registro (Windows)", "os": "windows", "cmd": "Get-ItemProperty / Set-ItemProperty", "desc": "Registro como proveedor PS.", "params": [{"p": "HKLM:\\...", "e": "Rama de máquina."}, {"p": "HKCU:\\...", "e": "Rama de usuario."}, {"p": "-Name", "e": "Nombre del valor."}, {"p": "-Value", "e": "Valor a establecer."}], "ex": ["Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\""], "level": ["admin", "scripting"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Paquetes y software", "os": "windows", "cmd": "winget", "desc": "Gestor de paquetes Windows.", "params": [{"p": "search", "e": "Busca apps."}, {"p": "install", "e": "Instala."}, {"p": "upgrade", "e": "Actualiza."}, {"p": "list", "e": "Lista instaladas."}, {"p": "--silent", "e": "Instalación silenciosa (si el paquete lo soporta)."}], "ex": ["winget search vscode", "winget install Microsoft.VisualStudioCode"], "level": ["admin"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}, {"cat": "Auditoría/Enumeración (autorizado)", "os": "linux", "cmd": "nmap", "desc": "Enumeración de puertos/servicios (uso autorizado).", "params": [{"p": "-sT", "e": "Escaneo TCP connect."}, {"p": "-p 1-1024", "e": "Rango de puertos."}, {"p": "-sV", "e": "Detección de versión."}, {"p": "-Pn", "e": "Sin ping previo (si ICMP filtrado)."}], "ex": ["nmap -sT -p 1-1024 -sV -Pn 192.168.1.10"], "level": ["pentest", "advanced", "admin"], "distro": ["any"], "linux_min": {}, "shell": null, "winver": ["any"], "tags": []}, {"cat": "Auditoría/Enumeración (autorizado)", "os": "windows", "cmd": "Get-NetTCPConnection", "desc": "Puertos en escucha / conexiones (inventario).", "params": [{"p": "-State Listen", "e": "Solo en escucha."}, {"p": "-LocalPort 445", "e": "Filtra por puerto."}], "ex": ["Get-NetTCPConnection -State Listen | Select-Object -First 20"], "level": ["pentest", "admin"], "distro": ["any"], "linux_min": {}, "shell": "powershell", "winver": ["any"], "tags": []}];
+
+const DISTRO_VERSIONS = {
+  any: ["any"],
+  ubuntu: ["any","18.04","20.04","22.04","24.04"],
+  debian: ["any","10","11","12"],
+  rhel: ["any","7","8","9"],
+  fedora: ["any","38","39","40","41"],
+  arch: ["any","rolling"]
+};
+
+function norm(s){
+  return (s||"").toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g,"");
+}
+function checkedValues(sel){
+  return Array.from(document.querySelectorAll(sel)).filter(x=>x.checked).map(x=>x.value);
+}
+function versionGte(v, min){
+  if (v === "rolling") return true;
+  const vf = parseFloat(v), mf = parseFloat(min);
+  if (Number.isNaN(vf) || Number.isNaN(mf)) return true;
+  return vf >= mf;
+}
+
+const elQ = document.getElementById("q");
+const elOsLinux = document.getElementById("osLinux");
+const elOsWindows = document.getElementById("osWindows");
+const elOnly = document.getElementById("onlyMatches");
+const elAutoOpen = document.getElementById("autoOpen");
+const elLinuxD = document.getElementById("linuxDistro");
+const elLinuxV = document.getElementById("linuxVersion");
+const elWinV = document.getElementById("winVersion");
+const elCat = document.getElementById("category");
+const elSections = document.getElementById("sections");
+const elStatVisible = document.getElementById("statVisible");
+const elStatTotal = document.getElementById("statTotal");
+const elImport = document.getElementById("importFile");
+
+function loadExtra(){
+  try{
+    const raw = localStorage.getItem("asir_cmds_extra");
+    if(!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){ return []; }
+}
+function saveExtra(arr){
+  localStorage.setItem("asir_cmds_extra", JSON.stringify(arr));
+}
+
+function getDATA(){
+  const extra = loadExtra();
+  // Merge and dedupe by (os,shell,cmd)
+  const merged = [...BUILTIN, ...extra];
+  const seen = new Set();
+  const out = [];
+  for(const it of merged){
+    const key = [it.os||"", it.shell||"", it.cmd||""].join("|").toLowerCase();
+    if(seen.has(key)) continue;
+    seen.add(key);
+    out.push(it);
+  }
+  return out;
+}
+
+function refillLinuxVersions(){
+  const d = elLinuxD.value;
+  const versions = DISTRO_VERSIONS[d] || ["any"];
+  const prev = elLinuxV.value;
+  elLinuxV.innerHTML = "";
+  for (const v of versions){
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = v==="any" ? "Cualquiera" : (v==="rolling" ? "Rolling" : v);
+    elLinuxV.appendChild(opt);
+  }
+  elLinuxV.value = versions.includes(prev) ? prev : "any";
+}
+
+function refillCategories(DATA){
+  const cats = Array.from(new Set(DATA.map(x=>x.cat))).sort((a,b)=>a.localeCompare(b,"es"));
+  const prev = elCat.value;
+  elCat.innerHTML = '<option value="any" selected>Todas</option>';
+  for (const c of cats){
+    const opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c;
+    elCat.appendChild(opt);
+  }
+  // keep previous if exists
+  if([...elCat.options].some(o=>o.value===prev)) elCat.value = prev;
+}
+
+function matchesFilters(item, term){
+  // OS
+  if (item.os === "linux" && !elOsLinux.checked) return false;
+  if (item.os === "windows" && !elOsWindows.checked) return false;
+
+  // Level
+  const lvls = checkedValues(".lvl");
+  if (!lvls.some(l => (item.level||[]).includes(l))) return false;
+
+  // Category
+  if (elCat.value !== "any" && item.cat !== elCat.value) return false;
+
+  // Windows shell + version
+  if (item.os === "windows"){
+    const shells = checkedValues(".shell");
+    if (item.shell && !shells.includes(item.shell)) return false;
+    if (!item.shell && shells.length === 0) return false;
+
+    const wsel = elWinV.value;
+    if (wsel !== "any"){
+      const wv = item.winver || ["any"];
+      if (!(wv.includes("any") || wv.includes(wsel))) return false;
+    }
+  }
+
+  // Linux distro + version
+  if (item.os === "linux"){
+    const dsel = elLinuxD.value;
+    const vsel = elLinuxV.value;
+
+    if (dsel !== "any"){
+      const ds = item.distro || ["any"];
+      if (!(ds.includes("any") || ds.includes(dsel))) return false;
+
+      if (vsel !== "any"){
+        const min = (item.linux_min||{})[dsel];
+        if (min && !versionGte(vsel, min)) return false;
+      }
+    }
+  }
+
+  // Search
+  if (term){
+    const hay = norm([
+      item.cmd, item.desc,
+      ...(item.params||[]).map(p=>p.p+" "+p.e),
+      ...(item.ex||[])
+    ].join(" "));
+    const ok = hay.includes(term);
+    if (elOnly.checked && !ok) return false;
+  }
+
+  return true;
+}
+
+function render(items){
+  const grouped = new Map();
+  for (const it of items){
+    if (!grouped.has(it.cat)) grouped.set(it.cat, []);
+    grouped.get(it.cat).push(it);
+  }
+
+  elSections.innerHTML = "";
+  const cats = Array.from(grouped.keys()).sort((a,b)=>a.localeCompare(b,"es"));
+
+  const levelNames = {basic:"Básico", admin:"Admin", advanced:"Avanzado", scripting:"Scripting", pentest:"Auditoría"};
+
+  for (const cat of cats){
+    const arr = grouped.get(cat);
+
+    const det = document.createElement("details");
+    det.className = "section";
+    det.open = true;
+
+    const sum = document.createElement("summary");
+    const k = document.createElement("span"); k.className="k"; k.textContent = cat;
+    const c = document.createElement("span"); c.className="count"; c.textContent = `${arr.length}`;
+    sum.appendChild(k); sum.appendChild(c);
+    det.appendChild(sum);
+
+    const wrap = document.createElement("div"); wrap.className="tablewrap";
+    wrap.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th style="width:16%">Comando</th>
+            <th style="width:38%">Parámetros (explicados)</th>
+            <th style="width:26%">Qué hace</th>
+            <th style="width:20%">Ejemplos</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    `;
+    const tbody = wrap.querySelector("tbody");
+
+    for (const it of arr){
+      const tr = document.createElement("tr");
+
+      const tags = [];
+      if (it.os === "linux") tags.push('<span class="tag linux">Linux</span>');
+      if (it.os === "windows") tags.push('<span class="tag win">Windows</span>');
+      if (it.shell === "cmd") tags.push('<span class="tag cmd">CMD</span>');
+      if (it.shell === "powershell") tags.push('<span class="tag ps">PowerShell</span>');
+      for (const lv of (it.level||[])) tags.push(`<span class="tag level">${levelNames[lv]||lv}</span>`);
+      if (it.os === "linux" && it.distro && !(it.distro.length===1 && it.distro[0]==="any")){
+        tags.push(`<span class="tag distro">${it.distro.join("/")}</span>`);
+      }
+
+      const paramsHtml = (it.params||[]).map(p=>`<li><code>${p.p}</code>: ${p.e}</li>`).join("");
+      const exHtml = (it.ex||[]).map(x=>`<li><code>${x}</code></li>`).join("");
+
+      tr.innerHTML = `
+        <td>
+          <code>${it.cmd}</code>
+          <div class="tags">${tags.join("")}</div>
+        </td>
+        <td><ul class="small">${paramsHtml || '<li>(sin parámetros típicos)</li>'}</ul></td>
+        <td>${it.desc || ""}</td>
+        <td><ul class="small ex">${exHtml || '<li>(sin ejemplo)</li>'}</ul></td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    det.appendChild(wrap);
+    elSections.appendChild(det);
+  }
+}
+
+function apply(){
+  const DATA = getDATA();
+  refillCategories(DATA);
+
+  const term = norm(elQ.value.trim());
+  const filtered = DATA.filter(it => matchesFilters(it, term));
+  render(filtered);
+
+  elStatVisible.textContent = `${filtered.length} visibles`;
+  elStatTotal.textContent = `${DATA.length} totales`;
+
+  if (elAutoOpen.checked){
+    document.querySelectorAll("details.section").forEach(d=>d.open=true);
+  }
+}
+
+// Buttons
+document.getElementById("reset").addEventListener("click", () => {
+  elQ.value = "";
+  document.querySelectorAll(".lvl").forEach(x=>x.checked=true);
+  elOsLinux.checked = true; elOsWindows.checked = true;
+  document.querySelectorAll(".shell").forEach(x=>x.checked=true);
+  elWinV.value = "any";
+  elLinuxD.value = "any";
+  refillLinuxVersions();
+  elCat.value = "any";
+  elOnly.checked = true;
+  elAutoOpen.checked = true;
+  apply();
+});
+document.getElementById("collapse").addEventListener("click", () => {
+  document.querySelectorAll("details.section").forEach(d=>d.open=false);
+});
+document.getElementById("expand").addEventListener("click", () => {
+  document.querySelectorAll("details.section").forEach(d=>d.open=true);
+});
+
+// Import/Export
+elImport.addEventListener("change", async () => {
+  const f = elImport.files && elImport.files[0];
+  if(!f) return;
+  const text = await f.text();
+  try{
+    const parsed = JSON.parse(text);
+    if(!Array.isArray(parsed)) throw new Error("JSON no es un array");
+    // Merge with existing extra
+    const extra = loadExtra();
+    saveExtra([...extra, ...parsed]);
+    elImport.value = "";
+    apply();
+    alert("Importado correctamente ✅");
+  }catch(e){
+    alert("No se pudo importar: " + e.message);
+  }
+});
+
+document.getElementById("exportJson").addEventListener("click", () => {
+  const DATA = getDATA();
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "asir_comandos_dataset.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById("clearLocal").addEventListener("click", () => {
+  localStorage.removeItem("asir_cmds_extra");
+  apply();
+  alert("Datos importados eliminados ✅");
+});
+
+// Search shortcut
+document.addEventListener("keydown", (e)=>{
+  if(e.key === "/" && document.activeElement !== elQ){
+    e.preventDefault();
+    elQ.focus();
+  }
+});
+
+// Events
+[elQ, elOsLinux, elOsWindows, elOnly, elAutoOpen, elLinuxD, elLinuxV, elWinV, elCat].forEach(el=>{
+  el.addEventListener("input", apply);
+  el.addEventListener("change", apply);
+});
+document.querySelectorAll(".lvl, .shell").forEach(el=>el.addEventListener("change", apply));
+
+// Init
+refillLinuxVersions();
+apply();
+</script>
+</body>
+</html>
